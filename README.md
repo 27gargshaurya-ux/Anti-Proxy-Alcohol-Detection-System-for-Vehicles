@@ -1,53 +1,65 @@
-# Anti-Proxy Alcohol Detection System for Vehicles
+# Anti-Proxy Alcohol Detection & Driver Authentication System
 
 ## 📌 Overview
-This project is an **advanced alcohol detection and driver authentication system** designed to enhance road safety. Unlike traditional alcohol sensors that can be bypassed, this system prevents **proxy attempts** by combining **alcohol detection with face verification**.
+This project is an **intelligent driver authentication and alcohol detection system** designed to **prevent drunk driving and proxy cheating**.  
 
-- **Alcohol Detection:** Uses an MQ-3 sensor to measure alcohol concentration in the driver’s breath.  
-- **Blow Detection:** A BMP180 pressure sensor ensures that the driver actually blows into the system before alcohol measurement.  
-- **Proxy Prevention with Face Matching:**  
-  - Camera 1 captures the image of the person blowing air.  
-  - Camera 2 continuously monitors the driver’s face while driving.  
-  - The system compares both faces to ensure the same person is driving — preventing proxy tests.  
-- **Vehicle Control:** A relay is used to enable/disable the ignition depending on the results.  
-- **Visual Feedback:** A 16x2 I²C LCD and LED provide clear system status.  
+Unlike traditional alcohol sensors, which can be bypassed (e.g., by blowing air from someone else), this system integrates:  
+- **Arduino Uno** → Acts as the **hardware interface** (sensors, relay, LCD).  
+- **Laptop (Python code)** → Works as the **brain** of the system, running advanced face recognition and decision-making.  
 
 ---
 
-## ⚡ Features
-- Detects if alcohol is present in the driver’s breath.  
-- Detects **air blow pressure** (no bypass with fake air pumps).  
-- Captures the photo of the person blowing.  
-- Performs **real-time face recognition** to ensure the same person is driving.  
-- Relay module controls ignition system (engine locked if alcohol detected or faces don’t match).  
-- Displays results on LCD and logs through Serial Monitor.  
+## ⚡ How It Works
+1. **Blow Detection (Arduino):**  
+   - BMP180 pressure sensor ensures the driver actually blows into the system.  
+   - Prevents cheating with air pumps or fans.  
+
+2. **Alcohol Detection (Arduino):**  
+   - MQ-3 sensor measures alcohol level in the breath.  
+   - If alcohol > threshold → **vehicle locked immediately**.  
+
+3. **Face Capture (Laptop – Camera 1):**  
+   - When no alcohol is detected, the laptop uses Camera 1 to capture the driver’s face while blowing.  
+   - Stores this as the **authenticated driver’s face**.  
+
+4. **Continuous Monitoring (Laptop – Camera 2):**  
+   - While driving, Camera 2 monitors the driver.  
+   - Laptop compares live faces with the stored face encoding.  
+   - If face doesn’t match → **relay is turned off, vehicle stopped** (proxy prevented).  
+
+5. **Relay & Ignition Control:**  
+   - Arduino only switches the relay (ignition ON/OFF).  
+   - It follows commands from the **laptop over serial communication**.  
 
 ---
 
 ## 🛠 Hardware Components
-- Arduino Uno / compatible board  
+- Arduino Uno (microcontroller interface)  
 - MQ-3 Alcohol Sensor  
-- BMP180 Pressure Sensor (for blow detection)  
-- 16x2 I²C LCD  
-- Relay Module (for ignition lock)  
-- LED + Resistor (status indicator)  
+- BMP180 Pressure Sensor (blow detection)  
+- 16x2 I²C LCD (status display)  
+- Relay Module (ignition lock/unlock)  
+- LED Indicator (alcohol detected alert)  
 - 2 × USB Cameras (one for blowing, one for driver monitoring)  
 - Jumper wires, breadboard, power supply  
 
 ---
 
 ## 💻 Software & Libraries
-**Arduino IDE:**  
+
+### Arduino (Embedded Layer):
 - `Wire.h`  
 - `Adafruit_Sensor.h`  
 - `Adafruit_BMP085_U.h`  
 - `LiquidCrystal_I2C.h`  
 
-**Python (PC side for face matching):**  
-- `opencv-python`  
-- `face_recognition`  
-- `numpy`  
-- `pyserial`  
+### Python (Laptop – Brain Layer):
+- `opencv-python` → Camera input & image processing  
+- `face_recognition` → Face encoding & recognition  
+- `numpy` → Mathematical operations & distance calculation  
+- `pyserial` → Communication with Arduino over USB  
+- `time` → Timing and delays  
+- `os` (optional if used) → File handling for saving images  
 
 ---
 
@@ -64,7 +76,7 @@ This project is an **advanced alcohol detection and driver authentication system
 - SDA → A4  
 - SCL → A5  
 
-**LCD (I²C, 16x2)**  
+**LCD (16x2 I²C)**  
 - VCC → 5V  
 - GND → GND  
 - SDA → A4  
@@ -82,38 +94,30 @@ This project is an **advanced alcohol detection and driver authentication system
 ---
 
 ## 🚦 System Workflow
-1. **Blow Detection:** BMP180 verifies that the driver blows into the system.  
-2. **Alcohol Detection:** MQ-3 measures alcohol content.  
-3. **Face Capture (Camera 1):** Captures the person blowing air.  
-4. **Face Monitoring (Camera 2):** Continuously checks the driver’s face.  
-5. **Comparison:** If faces match *and* no alcohol is detected → relay ON (vehicle starts).  
-6. If alcohol is detected OR faces do not match → relay OFF (vehicle locked).  
 
 ---
 
 ## 📂 Repository Contents
-- `arduino_code/` → Arduino sketch for MQ-3, BMP180, LCD, Relay  
-- `python_code/` → Python script for dual-camera face matching and relay control  
+- `arduino_code/` → Arduino sketch (sensors, LCD, relay, serial communication)  
+- `python_code/` → Python script (face recognition, decision making, relay commands)  
 - `circuit_diagram/` → Circuit schematic  
 - `media/` → Photos & demo videos of the project  
 - `README.md` → Documentation (this file)  
 
 ---
 
-## 📜 License
-This project is licensed under the **Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)** License.  
-You are free to use and modify the code for learning and research, but **commercial use is not permitted**.  
-[View License](https://creativecommons.org/licenses/by-nc/4.0/)  
-
----
-
 ## 🗓️ Project Timeline
 - **October 2024 (End):** Project designed and implemented.  
-- **September 2025:** Documentation, cleanup, and upload to GitHub.  
+- **September 2025:** Documentation and GitHub release.  
 
 ---
 
 ## 👨‍💻 Author
 Developed by **Shaurya Garg**  
-[LinkedIn](https://www.linkedin.com/in/shaurya-garg-445a93386/) 
+[LinkedIn](https://www.linkedin.com/in/shaurya-garg-445a93386/) |  
+
 ---
+
+## 📜 License
+Licensed under **Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)**.  
+Use for research & education is allowed, commercial use is not.  
