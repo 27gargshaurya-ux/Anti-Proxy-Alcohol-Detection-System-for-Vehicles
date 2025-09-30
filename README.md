@@ -19,9 +19,8 @@ Unlike traditional alcohol sensors, which can be bypassed (e.g., by blowing air 
    - If alcohol > threshold → **vehicle locked immediately**.  
 
 3. **Face Capture (Laptop – Camera 1):**  
-   - When no alcohol is detected, the laptop uses Camera 1 to capture the driver’s face while blowing.  
-   - Stores this as the **authenticated driver’s face**.  
-
+   - To capture the driver’s face while blowing.  
+   
 4. **Continuous Monitoring (Laptop – Camera 2):**  
    - While driving, Camera 2 monitors the driver.  
    - Laptop compares live faces with the stored face encoding.  
