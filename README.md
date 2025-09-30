@@ -1,4 +1,4 @@
-# Anti-Proxy Alcohol Detection & Driver Authentication System
+# Anti-Proxy Alcohol Detection System
 
 ## 📌 Overview
 This project is an **intelligent driver authentication and alcohol detection system** designed to **prevent drunk driving and proxy cheating**.  
